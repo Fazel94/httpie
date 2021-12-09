@@ -191,7 +191,12 @@ def run(
     print()
 
     for env_names, result in result_outputs.items():
-        print('#' + ' vs '.join(f'`{env_name}`' for env_name in env_names), file=file)
+        lines = result.strip().splitlines()
+        if 'hidden' in lines[-1]:
+            lines[-1], *_ = lines[-1].partition(':')
+            result = '\n'.join(lines)
+
+        print('###', ' vs '.join(f'`{env_name}`' for env_name in env_names), file=file)
         print(result, file=file)
 
     print('Results are available at:', result_directory)
